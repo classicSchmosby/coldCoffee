@@ -1,0 +1,87 @@
+html, body {
+	margin:0;
+	padding:0;
+	border:0;
+}
+#mycycleLogo {
+	float:left;
+	left:0;
+	top:0;
+	position:absolute;
+	display:inline-block;
+	margin-left:15px;
+}
+#searchSettings {
+	float:right;
+	right:0;
+	position:absolute;
+	display:inline-block;
+	margin-right:15px;
+}
+/* text-input in #searchSettings */
+#search {
+	background-color:#0BCAF5;
+	color:#fff;
+	text-decoration:none;
+	outline:0;
+	border:0;
+	border-bottom:1px solid white;
+}
+#settingsTab {
+	width:300px;
+	height:auto;
+	background-color:#E1E1E1;
+	z-index:1000;
+	float:left;
+	left:0;
+}
+#userIcon {
+	width:100%;
+	height:auto;
+	margin-left:20px;
+}
+#userIconThumbnail {
+	width:auto;
+	height:auto;
+	float:left;
+	left:0;
+}
+#userIconPicture {
+	width:60px;
+	height:60px;
+	float:left;
+	left:0;
+}
+#userIconDesc {
+	color:#fff;
+	margin-top:10px;
+	width:auto;
+}
+#settingsItems {
+
+}
+::-webkit-input-placeholder {
+  visibility:visible;
+  opacity:1;
+  color:#fff;
+}
+::placeholder {
+  visibility:visible;
+  opacity:1;
+  color:#fff;
+}
+::-moz-placeholder {
+  visibility:visible;
+  opacity:1;
+  color:#fff;
+}
+:-ms-input-placeholder {
+  visibility:visible;
+  opacity:1;
+  color:#fff;
+}
+:-moz-placeholder {
+  visibility:visible;
+  opacity:1;
+  color:#fff;
+}

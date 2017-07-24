@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="UTF-8">
+    <link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon" />
+    <link href="assets/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="assets/css/main.css" rel="stylesheet" type="text/css">
+	  <link href="//assets/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<!-- <link href="assets/css/materialize.css" rel="stylesheet"> -->
+    <script src="assets/js/jquery.min.js"></script>
+	  <script src="assets/js/Chart.js"></script>
+	  <script src="assets/js/myAccountPreloader.js"></script>
+	<!--<script src="assets/js/modernizr.custom.js"></script>-->
+	
+    <!-- TEST --><link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic' rel='stylesheet' type='text/css'>
+    <!-- TEST --><link href='http://fonts.googleapis.com/css?family=Raleway:400,300,700' rel='stylesheet' type='text/css'>
+
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <title>My Account</title>
+
+  </head>
+<body>
+
+<nav>
+    <div class="mainNav">
+      <p class="navItem"><a href="index.html">MyCycle</a></p>
+      <p class="navItem"><a href="map.html">Map</a></p>
+      <p class="navItem"><a href="#">Other</a></p>
+      <p class="navItem"><a href="myAccount.html">My Account</a></p>
+    </div>
+</nav>
+
+<div class="profile">
+
+<h1 class="userTitle">My Account</h1>
+
+<div class="userImg">
+  <h1 class="userImgTitle">Display Picture</h1>
+  <img src="assets/img/pictureError.png" id="userImgWarning" title="Upload Image" />
+    <button class="btnEdit" style="width:33.3%;display:inline-block;"><a href="#">Edit</a></button>
+    <button id="btnUpload" title="Upload Image" style="width:33.3%;margin-left:33.3%;display:inline-block;"><a href="myAccount.html">Upload</a></button>
+    <button class="btnEdit" style="width:33.3%;margin-left:66.6%;display:inline-block;"><a href="#">Delete</a></button>
+    <input id="input" type="file" name="name">
+</div>
+
+<form class="well form-horizontal" style="width:700px;margin-top:8%;margin-left:80px;" action=" " method="post" id="contact_form">
+<fieldset>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" style="margin-right:5px;">First Name</label>  
+  <div class="col-md-4 inputGroupContainer">
+  <div class="input-group">
+  <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+  <input name="first_name" placeholder="First Name" value="" class="form-control" type="text">
+    </div>
+  </div>
+  <img src="assets/img/confirm.png" style="width:25px;height:25px;" class="btnEditAccount2" title="Save" />
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" style="margin-right:5px;">Last Name</label> 
+    <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+  <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+  <input name="last_name" placeholder="Last Name" value="" class="form-control" type="text">
+    </div>
+  </div>
+    <img src="assets/img/confirm.png" style="width:25px;height:25px;" class="btnEditAccount2" title="Save" />
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" style="margin-right:5px;">Username</label> 
+    <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+  <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+  <input name="username" placeholder="Username" value="" class="form-control" type="text">
+    </div>
+  </div>
+    <img src="assets/img/confirm.png" style="width:25px;height:25px;" class="btnEditAccount2" title="Save" />
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" style="margin-right:5px;">E-mail</label> 
+    <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+  <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+  <input name="email" placeholder="E-mail" value="test@test.com" class="form-control" type="text" disabled>
+    </div>
+  </div>
+    <a href="changeEmail.html"><img src="assets/img/editEnabled.svg" class="btnEditAccount" title="Change" /></a>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" style="margin-right:5px;">Password</label>
+    <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+  <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+  <input name="password" placeholder="Password" value="password" class="form-control" type="password" disabled>
+    </div>
+    </div>
+    <a href="changePassword.html"><img src="assets/img/editEnabled.svg" class="btnEditAccount" title="Change" /></a>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" class="btnEditAccount" style="margin-right:5px;">City</label> 
+    <div class="col-md-4 inputGroupContainer">
+    <div class="input-group">
+  <span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>
+  <input name="location" placeholder="City" value="" maxlength="50" class="form-control" type="text">
+    </div>
+  </div>
+    <img src="assets/img/confirm.png" style="width:25px;height:25px;" class="btnEditAccount2" title="Save" />
+</div>
+
+</fieldset>
+</form>
+
+  <div class="takeNote">
+    <p style="margin:5px;font-size:20px;"><u>Please take note:</u></p>
+    <p style="margin:5px;font-size:17px;">If any account is registered with a username that is abusive, inappropriate or anything similar - this will be <strong>vanquished.</strong></p>
+    <p style="margin:5px;font-size:17px;">If any account is registered with a profile picture that is abusive, inappropriate or anything similar - this will be <strong>vanquished.</strong></p>
+  </div>
+</div>
+
+<div class="userSettings">
+	<h1 class="userSettingsTitle">Settings</h1>
+    <div id="settingDetails">
+      <p></p>
+      <p style="margin-left:20px;"><a href="changePassword.html">&bull; Change my Password</a></p>
+      <p style="margin-left:20px;"><a href="#">&bull; Another one!</a></p>
+      <p style="margin-left:20px;"><a href="#">&bull; Another two!</a></p>
+      <p style="margin-left:20px;"><a href="#">&bull; Another three!</a></p>
+      <p style="margin-left:20px;"><a href="#">&bull; Another four!</a></p>
+      <p style="margin-left:20px;"><a href="#">&bull; Another five!</a></p>
+      <p style="margin-left:20px;"><a href="#">&bull; Another six!</a></p>
+    </div>
+</div>
+
+</body>
+<div class="myAccountPreloader"><h1 style="text-align:center;margin-top:32%;font-family:'Raleway';"><strong>Welcome, User.</strong></h1></div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $('#btnUpload').click(function(){
+    $('#input').click();
+  });
+});
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+  $('#userImgWarning').click(function(){
+    $('#input').click();
+  });
+});
+</script>
+
+</html>

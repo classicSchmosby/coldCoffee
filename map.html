@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MyCycle Map</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <!-- Link CSS -->
+    <link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon" />
+    <link href="assets/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="assets/css/main.css" rel="stylesheet" type="text/css">
+    <link href="assets/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="assets/css/rating.css" rel="stylesheet" type="text/css">
+    <!-- Link JS -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/Chart.js"></script>
+    <script src="assets/js/map.js"></script>
+    <script src="assets/js/adsbygoogle.js"></script>
+    <script src="assets/js/analytics.js"></script>
+    <script src="assets/js/googleAsync.js"></script>
+  <!-- <script src="assets/js/modernizr.custom.js"></script> -->
+  
+    <!-- TEST --><link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic' rel='stylesheet' type='text/css'>
+    <!-- TEST --><link href='http://fonts.googleapis.com/css?family=Raleway:400,300,700' rel='stylesheet' type='text/css'>
+
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+
+   <script type="text/javascript">
+
+        function addMarker(feature) {
+          var marker = new google.maps.Marker({
+            position: feature.position,
+            icon: icons[feature.type].icon,
+            map: map
+          });
+        }
+
+function initMap() {
+  var angels = {lat:52.37355,lng:1.101296};
+  var arbuckles = {lat:52.598992,lng:0.397362};
+  var rosys = {lat:52.536623,lng:1.480382};
+  var pennys = {lat:52.595284,lng:0.80887};
+  var pieceOfCake = {lat:52.7271482,lng:1.3600143};
+  var church = {lat:52.6250886,lng:0.4039008};
+  var sandringham = {lat:52.8283552,lng:0.5068542};
+
+  var map = new google.maps.Map(document.getElementById('map-canvas'), {
+    zoom: 9,
+    center: pennys
+  });
+
+  var angels = new google.maps.Marker({
+  position: angels,
+  title: 'Angel Cafe',
+  map: map,
+  icon: 'iconWork/maps/breakfast-n-brunch.png',
+});
+
+  var arbuckles = new google.maps.Marker({
+  position: arbuckles,
+  title: 'Arbuckles',
+  map: map, 
+  icon: 'iconWork/maps/food.png',
+});
+
+  var rosys = new google.maps.Marker({
+  position: rosys,
+  title: "Rosy Lee\'s",
+  map: map,
+  icon: 'iconWork/maps/coffee-n-tea.png',
+});
+
+  var pennys = new google.maps.Marker({
+  position: pennys,
+  title: "Penny\'s Tearoom",
+  map: map,
+  icon: 'iconWork/maps/coffee-n-tea.png',
+});
+
+  var pieceOfCake = new google.maps.Marker({
+    position: pieceOfCake,
+    title: "Piece of Cake Tearoom",
+    map: map,
+    icon: 'iconWork/maps/cake-shop.png',
+});
+
+  var church = new google.maps.Marker({
+    position: church,
+    title: "Church Farm",
+    map: map,
+    icon: 'iconWork/maps/food.png',
+});
+
+  var sandringham = new google.maps.Marker({
+  position: sandringham,
+  title: "Sandringham Cafe",
+  map: map,
+  icon: 'iconWork/maps/coffee-n-tea.png',
+});
+
+            function createContentString(title) {
+                return '<div id="mapWindow">'+
+              '<div id="bodyContent">'+
+              '<h1 style="color:#000;margin-top:5px;">' + title + '</h1>' +
+              '<p>Leave a Rating!</p>'+
+              '<fieldset id="mapReviewStars" class="rating">'+
+              '<input class="stars" id="star5" name="rating" value="5" />'+
+              '<label class="full" for="star5" title="Awesome - 5 Stars">'+'</label>'+
+              '<input class="stars" id="star4" name="rating" value="4" />'+
+              '<label class="full" for="star4" title="Pretty Good - 4 Stars">'+'</label>'+
+              '<input class="stars" id="star3" name="rating" value="3" />'+
+              '<label class="full" for="star3" title="Alright - 3 Stars">'+'</label>'+
+              '<input class="stars" id="star2" name="rating" value="2" />'+
+              '<label class="full" for="star2" title="Quite Poor - 2 Stars">'+'</label>'+
+              '<input class="stars" id="star1" name="rating" value="1" />'+
+              '<label class="full" for="star1" title="Just Bad - 1 Star">'+'</label>'+
+              '</fieldset>'+
+              '<br />'+'<br />'+
+              '<p>Average Rating:</p>'+'<p id="avRating">X.X</p>'+
+              '<fieldset id="mapReviewStars" class="rating">'+
+              '<input class="stars" id="star5" name="rating" value="5" />'+
+              '<label class="full" for="star5" title="Awesome - 5 Stars">'+'</label>'+
+              '<input class="stars" id="star4" name="rating" value="4" />'+
+              '<label class="full" for="star4" title="Pretty Good - 4 Stars">'+'</label>'+
+              '<input class="stars" id="star3" name="rating" value="3" />'+
+              '<label class="full" for="star3" title="Alright - 3 Stars">'+'</label>'+
+              '<input class="stars" id="star2" name="rating" value="2" />'+
+              '<label class="full" for="star2" title="Quite Poor - 2 Stars">'+'</label>'+
+              '<input class="stars" id="star1" name="rating" value="1" />'+
+              '<label class="full" for="star1" title="Just Bad - 1 Star">'+'</label>'+
+              '</fieldset>'+
+              '<br />'+'<br />'+
+              '<a class="whiteTextLinks" href="location.html"><p>Read more here.</p></a>'+
+              '</div>'+
+              '</div>';
+            }
+
+        var infowindowAngels = new google.maps.InfoWindow({
+          content: createContentString('Angel Cafe'),
+        });
+        var infowindowArbuckles = new google.maps.InfoWindow({
+          content: createContentString('Arbuckles'),
+        });
+        var infowindowRosys = new google.maps.InfoWindow({
+          content: createContentString('Rosys'),
+        });
+        var infowindowPennys = new google.maps.InfoWindow({
+          content: createContentString('Pennys'),
+        });
+        var infowindowPieceofCake = new google.maps.InfoWindow({
+          content: createContentString('Piece of Cake Tearoom'),
+        });
+        var infowindowChurch = new google.maps.InfoWindow({
+          content: createContentString('Church Farm'),
+        });
+        var infowindowSandringham = new google.maps.InfoWindow({
+          content: createContentString('Sandringham Cafe'),
+        });
+
+  angels.addListener('click', function() {
+          infowindowAngels.open(map, angels);
+        });
+  arbuckles.addListener('click', function() {
+          infowindowArbuckles.open(map, arbuckles);
+        });
+  rosys.addListener('click', function() {
+          infowindowRosys.open(map, rosys);
+        });
+  pennys.addListener('click', function() {
+          infowindowPennys.open(map, pennys);
+        });
+  pieceOfCake.addListener('click', function(){
+          infowindowPieceofCake.open(map, pieceOfCake);
+        });
+  church.addListener('click', function(){
+          infowindowChurch.open(map, church);
+        });
+  sandringham.addListener('click', function(){
+          infowindowSandringham.open(map, sandringham);
+        });
+}
+
+$(document).ready(function () {
+  google.maps.event.addDomListener(window, 'load', init());
+});
+
+    </script>
+  </head>
+
+  <body>
+    <div class="mainNav">
+    <p class="navItem"><a href="index.html">MyCycle</a></p>
+    <p class="navItem"><a href="map.html">Map</a></p>
+    <p class="navItem"><a href="#">Feed</a></p>
+    <p class="navItem"><a href="myAccount.html">My Account</a></p>
+    </div>
+    <br /><br/><p></p>
+
+    <div id="map-canvas" style="margin-top:10px;"></div>
+
+    <div class="alert alert-info" role="alert">
+      <h3 style="text-align:center;color:#000;margin:0;">Map not displaying properly? <a class="whiteTextLinks" title="Refresh" href="javascript:window.location.reload()">Refresh!</a>&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; Still not working?! <a class="whiteTextLinks" title="FAQ" href="faq.html">Find out more.</a></h3>
+    </div>
+
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAX19-3v6sqe2sFaoj5sjM8gQf-a7STWWk&callback=initMap">
+    </script>
+    <br />
+
+<div id="mapContent">
+  <div class="mapLegend">
+    <h4 style="color:#42A2D9;font-size:1.525em;margin-left:15px;"><strong>Map Legend</strong></h4>
+      <dl style="margin-left:15px;">
+        <dt><img src="iconWork/maps/bars.png"/></dt>
+        <dd>Bars</dd>
+        <dt><img src="iconWork/maps/breakfast-n-brunch.png"/></dt>
+        <dd>Breakfast</dd>
+        <dt><img src="iconWork/maps/cake-shop.png"/></dt>
+        <dd>Cake</dd>
+        </dl>
+        <dl style="margin-left:15px;">
+        <dt><img src="iconWork/maps/coffee-n-tea.png"/></dt>
+        <dd>Coffee</dd>
+        <dt><img src="iconWork/maps/pizza.png"/></dt>
+        <dd>Pizza</dd>
+        <dt><img src="iconWork/maps/restaurants.png"/></dt>
+        <dd>Restaurant</dd>
+      </dl>
+  </div> <!-- mapLegend -->
+</div> <!-- mapContent -->
+
+</body>
+  <div class="se-pre-con"></div>
+</html>

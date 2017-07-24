@@ -1,0 +1,54 @@
+Last Updated - 08/05/17
+
+DATABASE TABLES
+database1 = id1548840_mycycle_main
+
+MySQL Hostname???
+select user(); == id1548840_mycycle_main@2a02:4780:bad:c0de::14
+--or--
+select @@hostname == 9364.us-imm-sql2.000webhost.io
+--or--
+localhost
+
+MyCycle payments:
+mycycle.biz = $11.99 every year.
+Regular Premium = $2.65 every month.
+1 year = $43.79
+
+
+Account - Userid(fk)-username(fk)-email(fk)-password(bcrypt)-loginCount
+User - userid-First name-surname-username-email-city-accountCreated(fk)
+Register - userid(fk)-accountCreated
+Feedback - Userid(fk)-email(fk)-datePosted-description
+Location - locationid-company-lat-lng-averageRating
+Rating - userid(fk)-username(fk)-email(fk)-ratingTitle-ratingDesc-datePosted(fk?)
+
+
+FRONTEND TO-DO LIST
+contact - Fix contact form field formatting // FIXED
+default - Change about us section
+LARGE(ALL) - make pages responsive (bootstrap cols) - including nav bar
+feed - create feed templates
+messaging - create user friendly messaging layout
+location - create layout for profile of each place, including room for discussion. Complete page.
+
+
+BACKEND TO-DO LIST
+register - create new user and information in table - redirect to myaccount with custom preloader (include user details)
+login - add to logincount - match to existing information - redirect to myaccount with custom preloader (include user details)
+preloader - "Welcome, User" display for 5 seconds only after LOGIN or REGISTER
+contact - auto-fill form when ticked / else clear all - 
+my account - auto-fill form - saved button validation - default profile picture - 
+map - Create locations pulled from db table - create ratings pulled from db table - create an average rating for each location(average sql db data)
+forgotPassword_Send - validate inputted information with logged in ID - send email to address provided
+CREATE EMAIL - based on txt file (directory) - generate link that only lasts 30 minutes
+forgotPassword_Recieve - ensure new passwords match - ensure they fit specs of note (8 char, one uppercase, one int, one special)
+changePassword - create working script / automatic email - redirect to myaccount
+changeEmail - create working script / automatic email - redirect to myaccount
+myaccount - create page to work with multiple id's, show relevant information - research photo editing in browser - create delete function for photo
+PASSWORDS - salting hashes could be unsafe, unless using 2 tables. research bcrypt or scrypt?
+messaging - create working messaging system - 
+location - create page to work with multiple id's show relevant information - 
+general - NO SCRIPT MANAGERS(ASP.NET)
+
+https://www.google.co.uk/maps/dir/Carbrooke,+Thetford,+Norfolk+IP25+6ST,+UK/Thickthorn+Park+and+Ride,+Norwich+Road,+Hethersett+NR9+3AY

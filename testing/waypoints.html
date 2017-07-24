@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+    <html> 
+    <head> 
+       <meta http-equiv="content-type" content="text/html; charset=UTF-8"/> 
+       <title>waypoints</title>
+       <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    </head> 
+    <body style="font-family:Arial;font-size:12px;">
+    <style>
+      .floating-panel {
+        position: absolute;
+        top: 10px;
+        left: 25%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+      }
+    </style>
+    <div class="floating-panel">
+      <b>Start: </b>
+        <select id="start">
+          <option selected="selected" value="none"></option>
+          <option id="yourPosition" onclick="myPosition()" value="myLatLng">Your Location</option>
+          <!-- <option value="position"><i class="glyphicon glyphicon-globe"></i></option> -->
+          <option value="chicago, il">Chicago</option>
+          <option value="st louis, mo">St Louis</option>
+          <option value="joplin, mo">Joplin, MO</option>
+          <option value="oklahoma city, ok">Oklahoma City</option>
+          <option value="amarillo, tx">Amarillo</option>
+          <option value="gallup, nm">Gallup, NM</option>
+          <option value="flagstaff, az">Flagstaff, AZ</option>
+          <option value="winona, az">Winona</option>
+          <option value="kingman, az">Kingman</option>
+          <option value="barstow, ca">Barstow</option>
+          <option value="san bernardino, ca">San Bernardino</option>
+          <option value="los angeles, ca">Los Angeles</option>
+        </select>
+      <b>End: </b>
+        <select id="end">
+          <option selected="selected" value="none"></option>
+          <!-- <option value="position"><i class="glyphicon glyphicon-globe"></i></option> -->
+          <option id="yourPosition" onclick="myPosition()" value="myLatLng">Your Location</option>
+          <option value="chicago, il">Chicago</option>
+          <option value="st louis, mo">St Louis</option>
+          <option value="joplin, mo">Joplin, MO</option>
+          <option value="oklahoma city, ok">Oklahoma City</option>
+          <option value="amarillo, tx">Amarillo</option>
+          <option value="gallup, nm">Gallup, NM</option>
+          <option value="flagstaff, az">Flagstaff, AZ</option>
+          <option value="winona, az">Winona</option>
+          <option value="kingman, az">Kingman</option>
+          <option value="barstow, ca">Barstow</option>
+          <option value="san bernardino, ca">San Bernardino</option>
+          <option value="los angeles, ca">Los Angeles</option>
+        </select> <br />
+      <!-- <b>Check: </b>
+      <button onclick="getLocation()">Check</button> -->
+      <b>Send directions: </b>
+      <input type="text" id="myText" placeholder="Email Address" />
+      <button id="sendDirections" onclick="sendDirections" style="height:25px;">Send!</button>
+      <!-- <button style="height:25px;"><i class="glyphicon glyphicon-ok"></i>Send!</button> -->
+    </div>
+       <div style="width:100%;height:100%;">
+         <div id="map" style="width:80%;height:900px;float:left;"></div> 
+         <div id="panel" style="height:500px;width:300px;float:right;"></div>
+       </div>
+       
+       <script type="text/javascript"> 
+         var directionsService = new google.maps.DirectionsService();
+         var directionsDisplay = new google.maps.DirectionsRenderer();
+    
+         var map = new google.maps.Map(document.getElementById('map'), {
+           zoom:7,
+           mapTypeId: google.maps.MapTypeId.ROADMAP
+         });
+        
+         directionsDisplay.setMap(map);
+         directionsDisplay.setPanel(document.getElementById('panel'));
+    
+         var request = {
+           origin:"chicago, il",
+           destination:"st louis, mo",
+           travelMode: google.maps.DirectionsTravelMode.DRIVING
+         };
+    
+         directionsService.route(request, function(response, status) {
+           if (status == google.maps.DirectionsStatus.OK) {
+             directionsDisplay.setDirections(response);
+           }
+         });
+       </script> 
+    </body>
+    </html>

@@ -1,0 +1,42 @@
+<html>
+<head>
+<title>Login</title>
+<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+<link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon" />
+
+  <script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/Chart.js"></script>
+	<script src="assets/js/map.js"></script>
+	<!--<script src="assets/js/modernizr.custom.js"></script>-->
+	
+    <!-- TEST --><link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic' rel='stylesheet' type='text/css'>
+    <!-- TEST --><link href='http://fonts.googleapis.com/css?family=Raleway:400,300,700' rel='stylesheet' type='text/css'>
+
+</head>
+<body background="assets/img/another.jpg" style="height:100%;width:100%;">
+<div class="form-wrapperr" style="height:360px;">
+  
+  <!-- Uses login.php to process the login. Checks entered details are matching of anything within the email table and password table -->
+  <form method="POST" action="login.php">
+    <h3>Sign In Here</h3>
+	
+    <div class="form-item">
+		<input style="color:#fff;padding-left:5px;font-size:1.55em;border:1px solid #fff;border-radius:5px;" type="text" id="username" name="username" required="required" placeholder="Username"></input>
+    
+    <div class="form-item">
+		<input style="color:#fff;padding-left:5px;font-size:1.55em;border:1px solid #fff;border-radius:5px;" type="password" id="password" name="password" required="required" placeholder="Password"></input>
+    </div>
+    
+    <div class="button-panel">
+		<input type="submit" class="button" title="Register Here" name="register" value="Sign In"></input>
+    </div>
+  </form>
+
+  <div class="reminder">
+    <p>Not a member? <a href="register.html">Sign up now</a></p>
+    <p><a href="resetPassword_Send.html">Forgot your password?</a></p>
+  </div>
+</div>
+
+</body>
+</html>

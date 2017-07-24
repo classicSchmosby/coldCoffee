@@ -1,0 +1,10 @@
+MYCYCLE LOGO AND NAME
+
+View directions from -ORIGIN-HERE- to -DESTINATION-HERE- in Google Maps.
+<button>View in Google Maps</button>
+
+View directions in this PDF document.
+
+VIEW HERE BUTTON
+
+You requested this link using the "Save Directions" option on MyCycle.

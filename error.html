@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon" />	
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <link href="assets/css/main.css" rel="stylesheet">
+	  <link href="assets/css/font-awesome.min.css" rel="stylesheet">
+	<!-- <link href="assets/css/materialize.css" rel="stylesheet"> -->
+    <script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/Chart.js"></script>
+	<script src="assets/js/map.js"></script>
+    <script src="assets/js/smoothscroll.js"></script>
+	<!--<script src="assets/js/modernizr.custom.js"></script>-->
+	
+    <!-- TEST --><link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic' rel='stylesheet' type='text/css'>
+    <!-- TEST --><link href='http://fonts.googleapis.com/css?family=Raleway:400,300,700' rel='stylesheet' type='text/css'>
+
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <title>MyCycle Blog</title>
+
+  </head>
+<body>
+
+<nav>
+    <div class="mainNav">
+    <p class="navItem"><a href="index.html">MyCycle</a></p>
+    <p class="navItem"><a href="map.html">Map</a></p>
+    <p class="navItem"><a href="#">Other</a></p>
+    <p class="navItem"><a href="myAccount.html">My Account</a></p>
+</nav>
+<br /><br />
+<h1 style="text-align:center;">Some sort of error...</h1>
+
+<div id="error">
+<div id="errorImage">
+<img src="assets/img/error.png" style="width:298px;height:400px;margin-top:10px;margin-left:10px;" />
+</div>
+<div class="errorMessage">
+<p style="font-size:60px;font-family:'Raleway';"><strong>Whoa whoa whoa...</strong></p>
+<br class="errorBreak" />
+<p style="font-size:60px;font-family:'Raleway';margin-top:20px;"><strong>What happened?</strong></p>
+<br class="errorBreak" />
+<p style="font-size:60px;font-family:'Raleway';margin-top:20px;"><strong>Let's go <a class="backwards"><u>back</u></a> a page.</strong></p>
+</div>
+</div>
+
+</body>
+<div class="se-pre-con"></div>
+<script type="text/javascript">
+    $(document).ready(function (){
+        $('.backwards').click(function (){
+            window.history.back();
+            return false;
+        });
+    });
+</script>
+</html>

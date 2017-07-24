@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>autoComplete</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon" />
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/css/main.css" type="text/css">
+    <link rel="stylesheet" href="assets/css/bootstrap.css" type="text/css"/>
+    <link rel="stylesheet" href="assets/css/autocomplete.css" type="text/css"/>
+    <link rel="stylesheet" href="assets/css/rating.css" type="text/css"/>
+    <!-- JS -->
+    <script src="assets/js/jquery.min.js" type="text/javascript"></script>
+    <script src="assets/js/Chart.js" type="text/javascript"></script>
+    <script src="assets/js/map.js" type="text/javascript"></script>
+    <script src="assets/js/adsbygoogle.js" type="text/javascript"></script>
+    <script src="assets/js/analytics.js" type="text/javascript"></script>
+    <script src="assets/js/googleAsync.js" type="text/javascript"></script>
+    <script src="assets/js/jsPDF.js" type="text/javascript"></script>
+  </head>
+  <body>
+  <div class="loader"></div>
+  <div class="masterControls">
+    <input name="origin-input" id="origin-input" class="controls" type="text" placeholder="Origin location here" />
+    <!-- <button id="locationSwitch" class="btn btn-default" onclick="locationSwitch()" type="button"><i class="glyphicon glyphicon-transfer"></i></button> -->
+    <input name="destination-input" id="destination-input" class="controls" type="text" placeholder="Destination location here" />
+
+    <div id="mode-selector" class="controls">
+      <input type="radio" name="type" id="changemode-walking">
+      <label for="changemode-walking">Walking</label>
+
+      <input type="radio" name="type" id="changemode-bicycling" checked="checked">
+      <label for="changemode-bicycling">Bicycling</label>
+
+      <input type="radio" name="type" id="changemode-driving">
+      <label for="changemode-driving">Driving</label>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
+
+      <label for="tolls">Avoid Tolls: </label>
+      <input id="tolls" type="checkbox" name="tolls" onclick="switchTolls()" checked="checked" style="visibility:visible;outline:none;" />&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
+
+      <button id="restartMap" class="btn btn-default btn-xs" style="height:80%;top:0;margin-bottom:6px;" onclick="restartMap()" type="button"><i class="glyphicon glyphicon-refresh"></i> Restart</button>
+    </div>
+  </div>
+
+  <div id="saveMapAlert" style="display:none;" class="alert alert-info alert-dismissible" role="alert">
+    <button id="saveMapAlertClose" onclick="noAlert()" type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  <strong>Nice route!</strong> Do you want to save these directions?&nbsp;&nbsp;
+  <span class="label label-default" id="yesAlert" onclick="yesAlert()">Yes!</span>
+  <span class="label label-danger" id="noAlert" onclick="noAlert()">No!</span>
+  <span class="label label-primary" id="viewAlert" onclick="viewAlert()">View in Google Maps</span>
+  </div>
+
+  <div id="emailForm1" style="display:none;" class="alert alert-danger alert-dismissible" role="alert">
+    <button id="emailBtn1" type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span id="emailForm1Close" aria-hidden="true">&times;</span>
+    </button>
+  <strong>Oh no!</strong> You need to enter a valid email address to send directions!
+  </div>
+
+  <div id="emailForm2" style="display:none;" class="alert alert-success alert-dismissible" role="alert">
+    <button id="emailBtn2" type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span id="emailForm2Close" aria-hidden="true">&times;</span>
+    </button>
+  <strong>Success!</strong> Directions have been sent to: <strong id="userEmail"></strong>
+  </div>
+
+  <div id="saveDirectionsWrapper" class="col-lg-6" style="display:none;margin-bottom:20px;width:25%;">
+    <div class="input-group">
+      <input id="saveDirectionsForm" type="text" class="form-control" placeholder="Email Address" onkeydown="return runSave(event)" />
+      <span class="input-group-btn">
+        <button id="saveDirectionsFormBtn" onclick="save()" class="btn btn-default" type="button" title="Send Directions [Enter]">Send!</button>
+        &nbsp;
+        <input id="saveDirectionsDocumentForm" type="text" class="form-control" placeholder="File Name" onkeydown="return runDocSave(event)" required="required" />
+        <button id="saveDirectionsDocument" onclick="saveDirDocument()" class="btn btn-default" type="button" title="Save as PDF! (You don't need to include the file extension)">Save!</button>
+      </span>
+    </div><!-- input-group -->
+  </div><!-- col-lg-6 && saveDirectionsWrapper -->
+
+  <p id="result" style="display:none;"></p>
+
+    <div id="map"></div>
+    <div id="mapBanner" class="alert alert-info" role="alert">
+      <h3 style="text-align:center;color:#000;margin:0;">Map not displaying properly? <a class="mapBannerLinks" title="Refresh" onclick="restartMap()">Refresh!</a>&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; Still not working?! <a class="mapBannerLinks" title="FAQ" href="faq.html">Find out more.</a></h3>
+    </div>
+    <div id="panelWrapper">
+      <div id="panel" style="height:100%;width:100%;float:right;"></div>
+    </div>
+
+    <script>
+      // Initialize map and everything else on it.
+      function initMap() {
+        // create variables storing marker icon images.
+        var bar = 'iconWork/maps/bars.png';
+        var breakfast = 'iconWork/maps/breakfast-n-brunch.png';
+        var cake = 'iconWork/maps/cake-shop.png';
+        var coffee = 'iconWork/maps/coffee-n-tea.png';
+        var food = 'iconWork/maps/food.png';
+        var pizza = 'iconWork/maps/pizza.png';
+        var restaurant = 'iconWork/maps/restaurants.png';
+        var saloon = 'iconWork/maps/saloon.png';
+
+        // create variables storing marker locations.
+        var angelsLocation = '1 Baldry\'s Yard, Fair Green, Diss IP22 4NQ, United Kingdom';
+        var arbucklesLocation = 'Arbuckles Restaurant & Bar, A10, Bexwell, United Kingdom';
+        var rosysLocation = '37A Bridge St, Loddon, Norwich NR14 6NA, United Kingdom';
+        var pennysLocation = 'Hills Road, Saham Hills IP25 7EZ, United Kingdom';
+        var cakeLocation = 'Church Close, Coltishall NR12 7DL, United Kingdom';
+        var churchLocation = 'Fincham Rd, Stow Bardolph PE34 3HT, United Kingdom';
+        var sandringhamLocation = 'Sandringham PE35 6EH, United Kingdom';
+
+        // create variables storing location websites.
+        var angelsSite = 'https://angelcafediss.com/';
+        var arbucklesSite = 'https://www.arbuckles.biz/';
+        var rosysSite = 'https://www.facebook.com/rosyleesloddon';
+        var pennysSite = 'https://www.facebook.com/Pennys-Tearoom-237154539811065/';
+        var cakeSite = 'http://coltishallcakes.co.uk/';
+        var churchSite = 'http://www.churchfarmstowbardolph.co.uk/cafe-tea-room/';
+        var sandringhamSite = 'http://sandringhamcafe.co.uk/';
+
+        var locations = [
+          ['Angels Cafe', angelsLocation, angelsSite, 52.37355, 1.101296, 1, breakfast, 4.2343, 3],
+          ['Arbuckles', arbucklesLocation, arbucklesSite, 52.5989921, 0.3973618, 2, food, 4.4214, 5],
+          ['Rosy Lee\'s', rosysLocation, rosysSite, 52.536623, 1.480382, 3, coffee, 3.3243, 6],
+          ['Penny\'s Tearoom', pennysLocation, pennysSite, 52.595284, 0.80887, 4, coffee, 1.1224, 9],
+          ['Coltishall Cakes', cakeLocation, cakeSite, 52.7271482, 1.3600143, 5, cake, 2.0347, 6],
+          ['Church Farm', churchLocation, churchSite, 52.6250886, 0.4039008, 6, food, 2.2343, 1],
+          ['Sandringham Cafe', sandringhamLocation, sandringhamSite, 52.8283552, 0.5068542, 7, coffee, 4.6433, 11]
+          // locations[i][0] = location title.
+          // locations[i][1] = location address / description. BEING_TESTED.
+          // locations[i][2] = location website.
+          // locations[i][3] = location Lat.
+          // locations[i][4] = location Lng.
+          // locations[i][5] = location ID.
+          // locations[i][6] = location icon type.
+          // locations[i][7] = average rating of location. NEEDS_PHP
+          // locations[i][8] = total number of ratings for location. NEEDS_PHP
+        // end locations array.
+        ];
+        // currently not being used.
+        var reviews = [
+        	['ratingOne', 1, "One"],
+        	['ratingTwo', 2, "Two"],
+        	['ratingThree', 3, "Three"],
+        	['ratingFour', 4, "Four"],
+        	['ratingFive', 5, "Five"]
+        ];
+        // end reviews array.
+        // create map options
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom:9,
+          center: new google.maps.LatLng(52.595284, 0.80887),
+          mapTypeControl: false,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+
+        // create traffic layer
+        var trafficLayer = new google.maps.TrafficLayer();
+        // trafficLayer.setMap(map);
+
+        var infowindow = new google.maps.InfoWindow({
+          // maxWidth:300,
+        });
+
+    // create markers based on the number of results in locations array.
+    for (var i = 0; i < locations.length; i++) {
+    	var marker = new google.maps.Marker({
+        id: locations[i][5],
+        description: locations[i][1],
+        source: locations[i][2],
+        title: locations[i][0],
+        position: new google.maps.LatLng(locations[i][3], locations[i][4]),
+        map: map,
+        icon: locations[i][6]
+      });
+
+        google.maps.event.addListener(marker, 'click', (function(marker, i) {
+          return function() {
+            infowindow.setContent('<div id="mapWindow">(Location ID: '+ locations[i][5] +
+            ') (<a class="whiteTextLinks2" href="'+ locations[i][2] +'">'+ locations[i][0] +' Website</a>)<div id="bodyContent">'+
+            '<a class="whiteTextLinks2" href="location.html" target="_blank"><h1 id="locationTitle" class="whiteTextLinks2" style="color:#000;margin-top:5px;">' + locations[i][0] + '</h1></a>'+
+            '<h4 id="avRating"><strong>' + locations[i][7].toFixed(2) + ' / 5.00</strong> (Total: '+ locations[i][8].toFixed(0) +')</h4>'+
+            '<form id="windowForm1" method="post" action="something.php">'+
+            '<fieldset id="mapReviewStars" class="rating">'+
+            '<input class="stars" id="star5" name="rating" value="5" />'+
+            '<label class="full" for="star5" title="Awesome - 5 Stars">'+'</label>'+
+            '<input class="stars" id="star4" name="rating" value="4" />'+
+            '<label class="full" for="star4" title="Pretty Good - 4 Stars">'+'</label>'+
+            '<input class="stars" id="star3" name="rating" value="3" />'+
+            '<label class="full" for="star3" title="Alright - 3 Stars">'+'</label>'+
+            '<input class="stars" id="star2" name="rating" value="2" />'+
+            '<label class="full" for="star2" title="Quite Poor - 2 Stars">'+'</label>'+
+            '<input class="stars" id="star1" name="rating" value="1" />'+
+            '<label class="full" for="star1" title="Just Bad - 1 Star">'+'</label>'+
+            '</fieldset>'+
+            '</form>'+
+            '<br />'+
+            '<br />'+
+            '<p>Leave a Rating!</p>'+
+            '<form id="windowForm2" method="post" action="something.php">'+
+            '<fieldset id="mapReviewStars" class="rating">'+
+            '<input class="stars" id="star5" name="rating" value="5" />'+
+            '<label class="full" id="ratingFive" for="star5" onclick="setRating(5)" value="5" title="Awesome - 5 Stars">'+'</label>'+
+            '<input class="stars" id="star4" onclick="star4" name="rating" value="4" />'+
+            '<label class="full" id="ratingFour" for="star4" onclick="setRating(4)" value="4" title="Pretty Good - 4 Stars">'+'</label>'+
+            '<input class="stars" id="star3" onclick="star3" name="rating" value="3" />'+
+            '<label class="full" id="ratingThree" for="star3" onclick="setRating(3)" value="3" title="Alright - 3 Stars">'+'</label>'+
+            '<input class="stars" id="star2" onclick="star2" name="rating" value="2" />'+
+            '<label class="full" id="ratingTwo" for="star2" onclick="setRating(2)" value="2" title="Quite Poor - 2 Stars">'+'</label>'+
+            '<input class="stars" id="star1" onclick="star1" name="rating" value="1" />'+
+            '<label class="full" id="ratingOne" for="star1" onclick="setRating(1)" value="1" title="Just Bad - 1 Star">'+'</label>'+
+            '</fieldset>'+
+            '</form>'+
+            '<br />'+'<br />'+
+            '<input id="ratingTitle" type="text" placeholder="Leave a title! (optional)"/>'+
+            '<br />'+
+            '<textarea id="ratingComment" placeholder="Leave a comment! (optional)"></textarea>'+
+            '<br />'+
+            '<button id="ratingReset" onclick="ratingReset()" class="btn btn-danger">Reset <i class="glyphicon glyphicon-remove"></i></button>'+
+            '<button id="ratingSubmit" onclick="ratingSubmit()" class="btn btn-success">Submit <i class="glyphicon glyphicon-ok"</button>'+
+            '</div>'+
+            '</div>');
+            infowindow.open(map, marker);
+          } 
+      })(marker, i));
+    } // end of for.
+
+        new AutocompleteDirectionsHandler(map);
+      }; // end of initialise (initMap)?
+
+      // const = creates a constant scope of objects (array) with the name ratingIds.
+      const ratingIds = ['ratingOne', 'ratingTwo', 'ratingThree', 'ratingFour', 'ratingFive'];
+
+      // setRating = onclick for each rating label.
+      function setRating(rating) {
+          // create for loop. variables(a). 
+          for(let a = 0; a < ratingIds.length; a++) {
+              let checked = a <= (rating-1);
+              let fillColor = a <= (rating-1) ?'#FFD700' : '#DDDDDD';
+
+              // do the following to each object in the array.
+              document.getElementById(ratingIds[a]).checked = true;
+              document.getElementById(ratingIds[a]).style.color = fillColor;
+          }
+          // make ratingTitle, ratingComment, ratingSubmit all visible.
+          document.getElementById('ratingTitle').style.display = "inline";
+          document.getElementById('ratingComment').style.display = "inline";
+          document.getElementById('ratingSubmit').style.display = "inline";
+      };
+      // ratingReset = onclick for reset (btn-danger) button.
+      function ratingReset(rating) {
+          // create for loop. variables(b).
+          for(let b = 0; b < ratingIds.length; b++) {
+              let emptyColor = '#DDDDDD';
+
+              // do the following to each object in the array.
+              document.getElementById(ratingIds[b]).checked = false;
+              document.getElementById(ratingIds[b]).style.color = emptyColor;
+          }
+          // remove values from title and comment text inputs.
+          document.getElementById('ratingTitle').value = "";
+          document.getElementById('ratingComment').value = "";
+      };
+      // ratingSubmit = onclick for submit (btn-success) button.
+      function ratingSubmit(rating) {
+        // get ID of each rating star.
+        $("#ratingOne, #ratingTwo, #ratingThree, #ratingFour, #ratingFive").click(function() {
+          var t = this.id;
+          alert(t);
+        });
+
+        // create variables for title value and comment value.
+        var ratingTitle = document.getElementById('ratingTitle').value;
+        var ratingComment = document.getElementById('ratingComment').value;
+        // if there is no title and no comment, or if there is just no comment.
+          if((ratingTitle.length < 1 && ratingComment.length < 1) || (ratingComment.length < 1)) {
+            // if user clicks OK on confirm box.(a)
+            if(confirm("Are you sure you don't want to leave a comment?") == true) {
+              // (a)do this.
+              alert('you pressed OK!');
+            }
+            // if user clicks cancel on confirm box.(b)
+            else {
+              // (b)do this.
+              alert('you pressed cancel!');
+            }
+          }
+          else {
+            // if there is just no title.(c)
+            if(ratingTitle.length < 1) {
+              // (c)do this.
+              alert(ratingComment);
+            }
+            // if there is just no comment.(d)
+            if(ratingComment.length < 1) {
+              // (d)do this.
+              alert(ratingTitle);
+            }
+            // if there is a title and a comment.(e)
+            if(ratingTitle.length > 1 && ratingComment.length > 1) {
+              // (e)do this.
+              alert(ratingTitle + ' & ' + ratingComment);
+            }
+          }
+      };
+      
+
+      // @constructor
+      function AutocompleteDirectionsHandler(map) {
+        // define the map that is going to be used.
+        this.map = map;
+        // define the default origin-location - NULL.
+        this.originPlaceId = null;
+        // define the default destination-location - NULL.
+        this.destinationPlaceId = null;
+        // change default travel-mode for the route.
+        this.travelMode = 'BICYCLING';
+        var originInput = document.getElementById('origin-input');
+        var destinationInput = document.getElementById('destination-input');
+        var modeSelector = document.getElementById('mode-selector');
+        this.directionsService = new google.maps.DirectionsService();
+        this.directionsDisplay = new google.maps.DirectionsRenderer({
+          draggable:true,
+          map:map,
+          panel:document.getElementById('panel')
+        });
+        this.directionsDisplay.setMap(map);
+
+        var onChangeHandler = function() {
+          calculateAndDisplayRoute(directionsService, directionsDisplay);
+        };
+        document.getElementById('origin-input').addEventListener('change', onChangeHandler);
+        document.getElementById('destination-input').addEventListener('change', onChangeHandler);
+
+        var originAutocomplete = new google.maps.places.Autocomplete(
+          originInput,
+          {placeIdOnly: true}
+        );
+        var destinationAutocomplete = new google.maps.places.Autocomplete(
+          destinationInput,
+          {placeIdOnly: true}
+        );
+
+        // create options for type of travel for the route.
+        this.setupClickListener('changemode-walking', 'WALKING');
+        this.setupClickListener('changemode-driving', 'DRIVING');
+        this.setupClickListener('changemode-bicycling', 'BICYCLING');
+
+        this.setupPlaceChangedListener(originAutocomplete, 'ORIG');
+        this.setupPlaceChangedListener(destinationAutocomplete, 'DEST');
+
+        this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(originInput);
+        this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(destinationInput);
+        this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(modeSelector);
+
+        directionsDisplay.setPanel(document.getElementById('panel'));
+      }
+
+      // Sets a listener on a radio button to change the filter type on Places
+      // Autocomplete.
+      AutocompleteDirectionsHandler.prototype.setupClickListener = function(id, mode) {
+        var radioButton = document.getElementById(id);
+        var me = this;
+        radioButton.addEventListener('click', function() {
+          me.travelMode = mode;
+          me.route();
+        });
+      }; // AutocompleteDirectionsHandler - SETUP-CLICK-LISTENER
+
+      AutocompleteDirectionsHandler.prototype.setupPlaceChangedListener = function(autocomplete, mode) {
+        // replace this with me for the rest of the function.
+        var me = this;
+        autocomplete.bindTo('bounds', this.map);
+        autocomplete.addListener('place_changed', function() {
+          var place = autocomplete.getPlace();
+          if (!place.place_id) {
+            window.alert("Please select an option from the dropdown list.");
+            return;
+          }
+          if (mode === 'ORIG') {
+            me.originPlaceId = place.place_id;
+          } else {
+            me.destinationPlaceId = place.place_id;
+          }
+          me.route();
+        });
+      }; // AutocompleteDirectionsHandler-SETUP-PLACE-CHANGED-LISTENER
+
+      AutocompleteDirectionsHandler.prototype.route = function() {
+        if (!this.originPlaceId || !this.destinationPlaceId) {
+          return;
+        }
+        var me = this;
+        var request = this.directionsService.route({
+          origin: {'placeId': this.originPlaceId},
+          destination: {'placeId': this.destinationPlaceId},
+          travelMode: this.travelMode,
+          // IMPERIAL = miles, METRIC = km.
+          unitSystem: google.maps.UnitSystem.IMPERIAL,
+          // always keep tolls as true.
+          avoidTolls: true
+        }, function(response, status) {
+          if (status === 'OK') {
+            me.directionsDisplay.setDirections(response),
+            document.getElementById('saveMapAlert').style.display = "inherit";
+          } else {
+            window.alert('Directions request failed due to ' + status),
+            document.getElementById('saveMapAlert2').style.display = "inherit";
+          }
+        });
+      }; // AutocompleteDirectionHandler-ROUTE.
+      directionsService.route(request, function(response, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+          directionsDisplay.setDirections(response);
+        }
+      });
+
+      // Problematic: alerts are not showing on checkbox toggle.
+      // .toggleTolls on line: 614.
+      function switchTolls() {
+        // create variable(0) with src string (avoid tolls).
+        var noTolls = "https://maps.googleapis.com/maps/api/js?avoid=tolls&key=AIzaSyAomdRkAs6Es584dRUIflhwTTdcjkLwI_Y&libraries=places&callback=initMap";
+        // create variable(1) with src string (do not avoid tolls).
+        var yesTolls = "https://maps.googleapis.com/maps/api/js?key=AIzaSyAomdRkAs6Es584dRUIflhwTTdcjkLwI_Y&libraries=places&callback=initMap";
+          // if tolls checkbox is checked:
+          if (document.getElementById('tolls').checked) {
+            // change script src to variable(0) - DEFAULT
+            document.getElementByClassName('toggleTolls').src = noTolls.toString();
+              // alert('No tolls!');
+          } else {
+            // change script src to variable(1)
+            document.getElementByClassName('toggleTolls').src = yesTolls.toString();
+              // alert('tolls for dayz!');
+          }
+      }
+
+      // VALIDATION of a real email
+      // saving directions to email written in text input.
+      function save() {
+        var emailString = document.getElementById('saveDirectionsForm').value;
+        // if incorrect email
+        if (emailString.indexOf("@") < 0 || emailString.indexOf(".") < 0 || emailString.length < 6) {
+          // If string does not contain a '@' or '.' or is not longer than 6 characters => display error.
+          document.getElementById('emailForm1').style.display = "inherit";
+        } else {
+          document.getElementById('emailForm1').style.display = "none";
+        }
+        // if correct email
+        if (emailString.indexOf("@") > 0 && emailString.indexOf(".") > 0 && emailString.length > 6) {
+          // If string does contain a '@' or '.' or is longer than 6 characters => display sent confirmation.
+          document.getElementById('emailForm2').style.display = "inherit";
+          // directions link can be address...
+            // alert('https://www.google.co.uk/maps/dir/Carbrooke,+Thetford,+Norfolk+IP25+6ST,+UK/Thickthorn+Park+and+Ride,+Norwich+Road,+Hethersett+NR9+3AY/');
+        } else {
+          document.getElementById('emailForm2').style.display = "none";
+        }
+        // put user email into success alert
+        var saveDirectionsForm = document.getElementById("saveDirectionsForm").value;
+        document.getElementById("userEmail").innerHTML = saveDirectionsForm;
+      };
+      // run save() when pressing enter on input.
+      function runSave(e) {
+        // keyCode 13 is ENTER.
+        if (e.keyCode == 13) {
+          // run above save() function.
+          save();
+        }
+      };
+
+      function saveDirDocument() {
+        // create variable for input value - toString() to avoid compatibility issues.
+        var fileName = document.getElementById('saveDirectionsDocumentForm').value;
+        var directionDetail = ('View directions in Google\n');
+        var directionDetailTwo = ('\nsomething else\n \n');
+        var dirDoc = new jsPDF('p', 'mm', 'a4');
+
+        /* var dirDocContentLoc = document.createElement('h2');
+        var dirDocContentOrig = document.getElementByClassName('adp-text').innerHTML;
+        // var myStr = JSON.stringify(dirDocContentOrig);
+        dirDocContentLoc.innerHTML = dirDocContentOrig; */
+
+        dirDoc.textWithLink(directionDetail + directionDetailTwo, 10, 10, {url: 'http://www.google.com' });
+        dirDoc.save(fileName + '.pdf');
+      }
+      function runDocSave(e) {
+        if (e.keyCode == 13) {
+          saveDirDocument();
+        }
+      };
+
+      function viewAlert() {
+        // ORIG = variable for origin-input value.
+        var orig = document.getElementById('origin-input').value.toString();
+          // variable for splitting ORIG with commas.
+          let origOutput = orig.split(' ');
+        // DEST = variable for destination-input value.
+        var dest = document.getElementById('destination-input').value.toString();
+          // variable for splitting DEST with commas.
+          let destOutput =   dest.split(' ');
+        // create variable to merge origin and destination - toString() to avoid compatibility issues.
+        var googleLink = ("https://www.google.co.uk/maps/dir/" + origOutput + "/" + destOutput + "/").toString();
+        // open this link in new tab.
+        var a = window.open(googleLink, '_blank');
+        // switch to this new tab.
+        a.focus();
+      }
+
+      // Adding marker-location to origin text input.
+      // problematic.
+      // params: locations[i][1].
+      function um() {
+
+      }
+      // Adding marker-location to destination text input.
+      // problematic.
+      // params: locations[i][1].
+      function um2() {
+        
+      }
+
+      function noAlert() {
+        document.getElementById('saveMapAlert').style.display = 'none';
+        document.getElementById('saveDirectionsWrapper').style.display = 'none';
+      }
+
+      // switch origin-input text for destination-input text AND destination-input text for origin-input text.
+      // currently not being used.
+      function locationSwitch() {
+        var l = document.getElementById("origin-input").value;
+        var g = document.getElementById("destination-input").value;
+        document.getElementById("destination-input").value = l,
+        document.getElementById("origin-input").value = g;
+      };
+
+      // clicking restartMap() will reload the page
+      function restartMap() {
+        // clear value of origin input.
+        document.getElementById('origin-input').value = '';
+        // clear value of destination input.
+        document.getElementById('destination-input').value = '';
+        // clear value of email input.
+        document.getElementById('saveDirectionsForm').value = '';
+        // clear value of file name input.
+        document.getElementById('saveDirectionsDocumentForm').value = '';
+        // refresh page.
+        window.location.reload();
+      };
+    </script>
+    <!-- JQuery -->
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('#restartMap').click(function(){
+          $('#origin-input, #destination-input, #panel').val('');
+        });
+      });
+    </script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('#restartMap').click(function(){
+          $('#tolls, #changemode-bicycling').prop('checked', true);
+        });
+      });
+    </script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('#saveDirectionsFormBtn').click(function(){
+          $('#saveDirectionsForm').val('');
+        });
+      });
+    </script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('#saveMap').click(function(){
+          $('#saveMapAlert').css('display','inherit');
+        });
+      });
+    </script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('#saveMapAlertClose').click(function(){
+          $('#saveMapAlert, #saveDirections').css('display','none');
+        });
+      });
+    </script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('#noAlert').click(function(){
+          $('#saveMapAlert, #saveDirectionsWrapper, #result').css('display','none');
+        });
+      });
+    </script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('#emailBtn1, #emailForm1Close').click(function(){
+          $('#emailForm1').css('display','none');
+        });
+      });
+    </script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('#emailBtn2, #emailForm2Close').click(function(){
+          $('#emailForm2').css('display','none');
+        });
+      });
+    </script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('#yesAlert').click(function(){
+          $('#saveDirectionsWrapper').css('display','inherit');
+        });
+      });
+    </script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('#saveDirectionsForm').click(function(){
+          $('#result').css('display','inherit');
+        });
+      });
+    </script>
+    <script type="text/javascript">
+      $(window).load(function() {
+        $('.loader').hide();
+      });
+    </script>
+    <!-- if tolls were hidden: -->
+	  <script class="toggleTolls" src="https://maps.googleapis.com/maps/api/js?avoid=tolls&key=AIzaSyAomdRkAs6Es584dRUIflhwTTdcjkLwI_Y&libraries=places&callback=initMap"
+        async defer></script>
+    <!-- if tolls were not hidden: -->
+    <!-- <script class="toggleTolls" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAomdRkAs6Es584dRUIflhwTTdcjkLwI_Y&libraries=places&callback=initMap"
+        async defer></script> -->
+  </body>
+  <div class="se-pre-con"></div>
+</html>

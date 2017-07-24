@@ -1,0 +1,29 @@
+<html>
+<head></head>
+<body>
+<label class="paylabel" for="cardtype">Card Type:</label>
+<select id="cardtype" name="cards">
+    <option value="selectcard">--- Please select ---</option>
+    <option value="mastercard">Mastercard</option>
+    <option value="maestro">Maestro</option>
+    <option value="solo">Solo (UK only)</option>
+    <option value="visaelectron">Visa Electron</option>
+    <option value="visadebit">Visa Debit</option>
+</select><br/>
+<p id="saveRoute"></p>
+</body>
+<script type="text/javascript">
+function validate()
+{
+ var ddl = document.getElementById("cardtype");
+ var selectedValue = ddl.options[ddl.selectedIndex].value;
+    if (selectedValue == "selectcard")
+   {
+    alert("Please select a card type");
+   }
+   else {
+   	document.getElementById("saveRoute").innerHTML = selectedValue;
+   }
+}
+</script>
+</html>

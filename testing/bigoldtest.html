@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html> 
+<head> 
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
+  <title>Google Maps Multiple Markers</title> 
+  <script src="http://maps.google.com/maps/api/js?sensor=false" 
+          type="text/javascript"></script>
+</head> 
+<body>
+<style>
+	html, body {
+		padding:0;
+		margin:0;
+		border:0;
+		width:100%;
+		height:100%;
+	} 
+	#map {
+		width:80%;
+		height:80%;
+	}
+</style>
+  <div id="map"></div>
+
+  <script type="text/javascript">
+  var food = 'food.png';
+    var locations = [
+      ['angels', 52.37355, 1.101296, 1, 'testing', food],
+      ['arbuckles', 52.5989921, 0.3973618, 2, 'testing'],
+      ['rosys', 52.536623, 1.480382, 3, 'testing'],
+      ['pennys', 52.595284, 0.80887, 4, 'testing'],
+      ['pieceOfCake', 52.7271482, 1.3600143, 5, 'testing'],
+      ['church', 52.6250886, 0.4039008, 6, 'testing'],
+      ['sandringham', 52.8283552, 0.5068542, 7, 'testing']
+    ];
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom:9,
+      center: new google.maps.LatLng(52.595284, 0.80887),
+      mapTypeControl: false,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+    var infowindow = new google.maps.InfoWindow({
+    	maxWidth:300,
+    });
+
+    var marker, i;
+
+    for (i = 0; i < locations.length; i++) {  
+      marker = new google.maps.Marker({
+      	title: locations[i][0],
+        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+        map: map,
+        icon: locations[i][5]
+      });
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          //infowindow.setContent(locations[i][4]);
+          infowindow.setContent('<h1>'+ locations[i][0] +'</h1>');
+          infowindow.open(map, marker);
+        }
+        new AutocompleteDirectionsHandler(map);
+      })(marker, i));
+    }
+  </script>
+</body>
+</html>

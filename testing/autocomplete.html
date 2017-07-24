@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>autoComplete</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon" />
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/css/main.css" type="text/css">
+    <link rel="stylesheet" href="assets/css/bootstrap.css" type="text/css"/>
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="assets/css/autocomplete.css" type="text/css"/>
+    <link rel="stylesheet" href="assets/css/rating.css" type="text/css"/>
+    <!-- JS -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/Chart.js"></script>
+    <script src="assets/js/map.js"></script>
+    <script src="assets/js/adsbygoogle.js"></script>
+    <script src="assets/js/analytics.js"></script>
+    <script src="assets/js/googleAsync.js"></script>
+  </head>
+  <body>
+  <div id="masterControls">
+    <input name="origin-input" id="origin-input" class="controls" type="text"
+        placeholder="Enter an origin location">
+    <input name="destination-input" id="destination-input" class="controls" type="text"
+        placeholder="Enter a destination location">
+
+    <div id="mode-selector" class="controls">
+      <input type="radio" name="type" id="changemode-walking">
+      <label for="changemode-walking">Walking</label>
+
+      <input type="radio" name="type" id="changemode-bicycling" checked="checked">
+      <label for="changemode-bicycling">Bicycling</label>
+
+      <!-- <input type="radio" name="type" id="changemode-transit">
+      <label for="changemode-transit">Transit</label> -->
+
+      <input type="radio" name="type" id="changemode-driving">
+      <label for="changemode-driving">Driving</label>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
+
+      <label for="tolls">Avoid Tolls: </label>
+      <input id="tolls" type="checkbox" name="tolls" onchange="switchTolls(this)" checked="checked">&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
+
+      <button id="restartMap" class="btn btn-default btn-xs" style="height:80%;top:0;margin-bottom:6px;" onclick="restartMap()" type="button">Restart</button>
+    </div>
+  </div>
+
+  <div id="saveMapAlert" style="display:none;" class="alert alert-success alert-dismissible" role="alert">
+    <button id="saveMapAlertClose" type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  <strong>Nice route!</strong> Do you want to save these directions?&nbsp;&nbsp; <span class="label label-default" id="yesAlert" onclick="yesAlert()">Yes!</span> <span class="label label-danger" id="noAlert" onclick="noAlert()">No!</span>
+  </div>
+
+  <div id="saveDirectionsWrapper" class="col-lg-6" style="display:none;margin-bottom:20px;width:25%;">
+    <div class="input-group">
+      <input id="testingtesting" type="text" class="form-control" placeholder="Email Address" required="required" />
+      <span class="input-group-btn">
+        <button id="saveDirectionsForm" onclick="save()" class="btn btn-default" type="button">Send!</button>
+        <!-- <button id="saveDirectionsForm" onclick="saveDirectionsForm()" class="btn btn-default" type="button"><span class="glyphicon glyphicon-ok"></span></button> -->
+      </span>
+    </div><!-- input-group -->
+  </div><!-- col-lg-6 && saveDirectionsWrapper -->
+
+  <div id="saveMapAlert2" style="display:none;" class="alert alert-danger alert-dismissible" role="alert">
+    <button id="saveMapAlertClose2" type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  <strong>Oh snap!</strong> Blah blah!
+  </div>
+
+  <p id="result" style="display:none;"></p>
+
+    <div id="map"></div>
+    <div id="panelWrapper">
+      <div id="panel" style="height:100%;width:100%;float:right;"></div>
+    </div>
+
+    <script>
+      function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          mapTypeControl: false,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          center: {lat:52.595284,lng:0.80887},
+          zoom:9
+        });
+
+        new AutocompleteDirectionsHandler(map);
+      }
+
+      // @constructor
+      function AutocompleteDirectionsHandler(map) {
+        this.map = map;
+        this.originPlaceId = null;
+        this.destinationPlaceId = null;
+        this.travelMode = 'BICYCLING';
+        var originInput = document.getElementById('origin-input');
+        var destinationInput = document.getElementById('destination-input');
+        var modeSelector = document.getElementById('mode-selector');
+        this.directionsService = new google.maps.DirectionsService;
+        this.directionsDisplay = new google.maps.DirectionsRenderer({
+          draggable:true,
+          map:map,
+          panel:document.getElementById('panel')
+        });
+        this.directionsDisplay.setMap(map);
+
+        var originAutocomplete = new google.maps.places.Autocomplete(
+            originInput, {placeIdOnly: true});
+        var destinationAutocomplete = new google.maps.places.Autocomplete(
+            destinationInput, {placeIdOnly: true});
+
+        this.setupClickListener('changemode-walking', 'WALKING');
+        //this.setupClickListener('changemode-transit', 'TRANSIT');
+        this.setupClickListener('changemode-driving', 'DRIVING');
+        this.setupClickListener('changemode-bicycling', 'BICYCLING');
+
+        this.setupPlaceChangedListener(originAutocomplete, 'ORIG');
+        this.setupPlaceChangedListener(destinationAutocomplete, 'DEST');
+
+        this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(originInput);
+        this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(destinationInput);
+        this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(modeSelector);
+
+        directionsDisplay.setPanel(document.getElementById('panel'));
+      }
+
+      // Sets a listener on a radio button to change the filter type on Places
+      // Autocomplete.
+      AutocompleteDirectionsHandler.prototype.setupClickListener = function(id, mode) {
+        var radioButton = document.getElementById(id);
+        var me = this;
+        radioButton.addEventListener('click', function() {
+          me.travelMode = mode;
+          me.route();
+        });
+      };
+
+      AutocompleteDirectionsHandler.prototype.setupPlaceChangedListener = function(autocomplete, mode) {
+        var me = this;
+        autocomplete.bindTo('bounds', this.map);
+        autocomplete.addListener('place_changed', function() {
+          var place = autocomplete.getPlace();
+          if (!place.place_id) {
+            window.alert("Please select an option from the dropdown list.");
+            return;
+          }
+          if (mode === 'ORIG') {
+            me.originPlaceId = place.place_id;
+          } else {
+            me.destinationPlaceId = place.place_id;
+          }
+          me.route();
+        });
+      };
+
+      function switchTolls(tollsCheckbox) {
+        if(tollsCheckbox.checked) {
+          avoidTolls:true;
+        } else {
+          avoidTolls:false;
+        }
+      };
+
+      AutocompleteDirectionsHandler.prototype.route = function() {
+        if (!this.originPlaceId || !this.destinationPlaceId) {
+          return;
+        }
+        var me = this;
+        var request = this.directionsService.route({
+          origin: {'placeId': this.originPlaceId},
+          destination: {'placeId': this.destinationPlaceId},
+          travelMode: this.travelMode,
+          // IMPERIAL = mi, METRIC = km.
+          unitSystem: google.maps.UnitSystem.IMPERIAL,
+          avoidTolls: false
+        }, function(response, status) {
+          if (status === 'OK') {
+            me.directionsDisplay.setDirections(response),
+            document.getElementById('saveMapAlert').style.display = "inherit";
+          } else {
+            window.alert('Directions request failed due to ' + status),
+            document.getElementById('saveMapAlert2').style.display = "inherit";
+          }
+        });
+      };
+      directionsService.route(request, function(response, status) {
+           if (status == google.maps.DirectionsStatus.OK) {
+             directionsDisplay.setDirections(response);
+           }
+         });
+
+      // saving directions to email written in text input.
+      function save() {
+        var emailString = document.getElementById('testingtesting').value;
+        if (emailString.indexOf("@") < 0 || emailString.indexOf(".") < 0 || emailString.length < 6) {
+          // If string does not contain a '@' or '.' - print bootstrap X (E014)
+          document.getElementById("result").innerHTML = "<i class='glyphicon glyphicon-remove2' style='margin-left:4px;margin-top:4px;'></i>";
+        }
+        if (emailString.indexOf("@") > 0 && emailString.indexOf(".") > 0 && emailString.length > 6) {
+          // If string does contain a '@' or '.' - print bootstrap tick (E013)
+          document.getElementById("result").innerHTML = "<i class='glyphicon glyphicon-ok2' style='margin-left:4px;margin-top:4px;'></i>";
+        }
+      };
+
+      function restartMap() {
+        window.location.reload();
+      };
+    </script>
+    <!-- JQuery -->
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('#restartMap').click(function(){
+          $('#origin-input, #destination-input, #panel').val('');
+        });
+      });
+    </script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('#saveMap').click(function(){
+          $('#saveMapAlert').css('display','inherit');
+        });
+      });
+    </script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('#saveMapAlertClose').click(function(){
+          $('#saveMapAlert').css('display','none');
+        });
+      });
+    </script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('#noAlert').click(function(){
+          $('#saveMapAlert, #saveDirectionsWrapper, #result').css('display','none');
+        });
+      });
+    </script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('#yesAlert').click(function(){
+          $('#saveDirectionsWrapper').css('display','inherit');
+        });
+      });
+    </script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('#saveDirectionsForm').click(function(){
+          $('#result').css('display','inherit');
+        });
+      });
+    </script>  
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVoEntz1rutO_EwZrASkHDYPhn3VqPuTY&libraries=places&callback=initMap"
+        async defer></script>
+  </body>
+</html>

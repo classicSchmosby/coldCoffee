@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>JS Clock</title>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/themes/smoothness/jquery-ui.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
+    <script src="jquery.min.js" type="text/javascript"></script>
+  </head>
+  <body>
+  	<button id="someFunc" onclick="someFunc()" style="display:none;">CLICK</button>
+  	<h3 id="demo"></h3>
+
+  	<h3 id="gender"></h3>
+  </body>
+ <script type="text/javascript">
+  var userName = prompt("What is your name?", "");
+  	function someFunc() {
+  		var day;
+  		// any user - programatically enter.
+		var user = userName;
+		var hours = new Date().getHours();
+		var minutes = new Date().getMinutes();
+		var seconds = new Date().getSeconds();
+		var days = new Date().getDate();
+		// getMonth() is zero-based, so plus one, to get the current month.
+		var month = new Date().getMonth() + 1;
+		var year = new Date().getFullYear();
+		
+		switch (new Date().getDay()) {
+		    case 0:
+		        day = "Sunday";
+		        break;
+		    case 1:
+		        day = "Monday";
+		        break;
+		    case 2:
+		        day = "Tuesday";
+		        break;
+		    case 3:
+		        day = "Wednesday";
+		        break;
+		    case 4:
+		        day = "Thursday";
+		        break;
+		    case 5:
+		        day = "Friday";
+		        break;
+		    case 6:
+		        day = "Saturday";
+		}
+		document.getElementById("demo").innerHTML = "Hello, " + user + "!" + "<br /><br />" + "Today is " + day +
+		", " + days + "/" + month + "/" + year + " - " + hours + ":" + minutes + ":" + seconds;
+		
+		// load someFunc() every 10ms.
+		setTimeout(someFunc, 10);
+  	}
+  	$(document).ready(function () {
+  		someFunc();
+  	});
+  </script>
+</html>

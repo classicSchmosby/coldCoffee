@@ -1,0 +1,110 @@
+.content1 {
+	height:800px;
+	width:auto;
+	border-top:1px solid #ccc;
+	padding-top:15px;
+}
+#dv1, #dv0 {
+	width:408px;
+	border:1px solid #ccc;
+	padding:15px;
+	margin:auto;
+}
+fieldset, label {
+	margin:0;
+	padding:0;
+}
+.rating {
+	border:none;
+	float:left;
+}
+.rating > input {
+	display:none;
+}
+.rating > label:before {
+	margin:5px;
+	font-size:1.25em;
+	display:inline-block;
+	content:"\f005";
+	/* if Bootstrap is not working???
+	content:url(assets/img/ratingImage.png);
+	height:12px;
+	width:12px; */
+
+}
+.rating > .half:before {
+	position:absolute;
+	content:"\f089";
+	/* if Bootstrap is not working???
+	content:url(assets/img/ratingImage.png);
+	height:12px;
+	width:12px; */
+}
+.rating > label {
+	color:#ddd;
+	float:right;
+}
+.rating > input:checked ~ label,
+.rating:not(:checked) > label:hover,
+.rating:not(:checked) > label.hover ~ label {
+	color:#FFD700;
+	cursor:pointer;
+}
+.rating > label:hover, label:focus, label:active
+.rating > label:hover, label:focus, label:active
+.rating > label:hover, label:focus, label:active
+.rating > label:hover, label:focus, label:active {
+	color:#FFD700;
+	cursor:pointer;
+}
+.rating > input:checked,
+.rating > input:checked,
+.rating > input:checked ~ label,
+.rating > input:checked ~ label {
+	height:100px;
+	color:#FFD700;
+	cursor:pointer;
+}
+.rating > input:checked, input:focus, label:active,
+.rating > input:checked, input:focus, label:active,
+.rating > input:checked, input:focus, label:active ~ label,
+.rating > input:checked, input:focus, label:active ~ label {
+	color:#FFD700;
+	cursor:pointer;
+}
+.rating > input + img {
+	cursor:pointer;
+	border:2px solid transparent;
+	color:#FFD700;
+}
+label > input:checked + img {
+	border:2px solid #F00;
+	color:#FFD700;
+}
+#ratingTitle {
+	outline:none;
+	border-radius:5px;
+	border:1px solid #ddd;
+	margin-top:3px;
+	margin-bottom:5px;
+	color:#000;
+	text-decoration:none;
+}
+#ratingComment {
+	outline:none;
+	border-radius:5px;
+	border:1px solid #ddd;
+	padding-top:3px;
+	color:#000;
+	text-decoration:none;
+}
+#ratingReset {
+	margin-top:5px;
+	margin-right:2px;
+	outline:none;
+}
+#ratingSubmit {
+	margin-top:5px;
+	margin-left:2px;
+	outline:none;
+}
