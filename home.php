@@ -1,3 +1,7 @@
+<?php
+	include('session.php');
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -27,6 +31,7 @@
 			<i class="icon-remove menu-close"></i>
 			<a href="index.html" class="smoothScroll">Home</a>
 			<a href="login.html">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;Login</a>
+			<a href="logout.php">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;Logout</a>
 			<a href="register.html">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;Register</a>
 			<a href="myAccount.html">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;My Account</a>
 			<a href="resetPassword_Send">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;Reset Password</a>

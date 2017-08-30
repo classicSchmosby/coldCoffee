@@ -1,0 +1,50 @@
+**auditUserLogin**
+
+loginId - int(3) - AI => PRIMARY
+FK_Username - char(24)
+password - char(42)
+loginDate - char(19)
+
+**users**
+
+userId - int(3) - AI => PRIMARY
+username - char(24)
+password - char(42) - nullable
+firstName - char(24)
+surname - char(24)
+email - char(24)
+city - char(24)
+accountCreated - char(19)
+
+**location**
+
+locationId - int(3) - AI => PRIMARY
+companyName - char(24)
+postcode - char(8)
+phoneNumber - int(12)
+lat - decimal(14) - UNIQUE?
+lng - decimal(14) - UNIQUE?
+averageRating - decimal(3)
+
+**review**
+
+ratingId - int(12) - AI => PRIMARY
+ratingTitle - char(54)
+ratingDescription - char(128)
+datePosted - char(19)
+FK_userId - int(3)
+FK_username - char(24)
+FK_locationId - int(3)
+
+
+
+
+
+
+
+
+
+
+
+
+

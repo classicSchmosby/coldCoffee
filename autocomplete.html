@@ -157,7 +157,7 @@
           mapTypeId: google.maps.MapTypeId.ROADMAP
         });
 
-        // create traffic layer
+        // create traffic layer - this is disabled if setMap isnt called.
         var trafficLayer = new google.maps.TrafficLayer();
         // trafficLayer.setMap(map);
 
@@ -318,15 +318,23 @@
         this.destinationPlaceId = null;
         // change default travel-mode for the route.
         this.travelMode = 'BICYCLING';
+        // set origin-input text input as the ORIGIN.
         var originInput = document.getElementById('origin-input');
+        // set destination-input text input as the DESTINATION
         var destinationInput = document.getElementById('destination-input');
         var modeSelector = document.getElementById('mode-selector');
+        // define directionsService
         this.directionsService = new google.maps.DirectionsService();
+        // define and config direcionsRenderer
         this.directionsDisplay = new google.maps.DirectionsRenderer({
+          // set direction markers (A + B) to draggable.
           draggable:true,
+          // define which div is the map.
           map:map,
+          // define which div is the direction panel.
           panel:document.getElementById('panel')
         });
+        // show directions on map.
         this.directionsDisplay.setMap(map);
 
         var onChangeHandler = function() {
@@ -385,6 +393,7 @@
           } else {
             me.destinationPlaceId = place.place_id;
           }
+          // display this.route on map.
           me.route();
         });
       }; // AutocompleteDirectionsHandler-SETUP-PLACE-CHANGED-LISTENER
@@ -400,7 +409,7 @@
           travelMode: this.travelMode,
           // IMPERIAL = miles, METRIC = km.
           unitSystem: google.maps.UnitSystem.IMPERIAL,
-          // always keep tolls as true.
+          // always keep tolls as true, by default.
           avoidTolls: true
         }, function(response, status) {
           if (status === 'OK') {
@@ -470,6 +479,19 @@
         }
       };
 
+      // get current zoom level on map, to parse into URL. - PROBLEMATIC
+      function getZoom(map) {
+        // create true and false variables
+        var yesBoolie = true;
+        var noBoolie = false;
+        // create variables for the map's zoom.
+        var z = map.getZoom();
+        var zz = map.getCameraPosition().zoom;
+        // alert findings.
+        alert(z);
+        alert(zz);
+      }
+
       function saveDirDocument() {
         // create variable for input value - toString() to avoid compatibility issues.
         var fileName = document.getElementById('saveDirectionsDocumentForm').value;
@@ -477,12 +499,9 @@
         var directionDetailTwo = ('\nsomething else\n \n');
         var dirDoc = new jsPDF('p', 'mm', 'a4');
 
-        /* var dirDocContentLoc = document.createElement('h2');
-        var dirDocContentOrig = document.getElementByClassName('adp-text').innerHTML;
-        // var myStr = JSON.stringify(dirDocContentOrig);
-        dirDocContentLoc.innerHTML = dirDocContentOrig; */
-
-        dirDoc.textWithLink(directionDetail + directionDetailTwo, 10, 10, {url: 'http://www.google.com' });
+        dirDoc.textWithLink(directionDetail + directionDetailTwo, 10, 10, {
+          url: 'http://www.google.com' 
+        });
         dirDoc.save(fileName + '.pdf');
       }
       function runDocSave(e) {
@@ -551,21 +570,21 @@
     </script>
     <!-- JQuery -->
     <script type="text/javascript">
-      $(document).ready(function(){
+      $(document).ready(function() {
         $('#restartMap').click(function(){
           $('#origin-input, #destination-input, #panel').val('');
         });
       });
     </script>
     <script type="text/javascript">
-      $(document).ready(function(){
+      $(document).ready(function() {
         $('#restartMap').click(function(){
           $('#tolls, #changemode-bicycling').prop('checked', true);
         });
       });
     </script>
     <script type="text/javascript">
-      $(document).ready(function(){
+      $(document).ready(function() {
         $('#saveDirectionsFormBtn').click(function(){
           $('#saveDirectionsForm').val('');
         });
