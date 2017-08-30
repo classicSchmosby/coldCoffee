@@ -27,7 +27,7 @@
 	<!-- Menu -->
 	<nav class="menu" id="theMenu">
 		<div class="menu-wrap">
-			<h1 class="logo"><a href="">Menu</a></h1>
+			<h1 class="logo"><a href="">Menu - <?php echo($login_session); ?></a></h1>
 			<i class="icon-remove menu-close"></i>
 			<a href="index.html" class="smoothScroll">Home</a>
 			<a href="login.html">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;Login</a>

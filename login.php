@@ -54,18 +54,18 @@
     <!-- TEST --><link href='http://fonts.googleapis.com/css?family=Raleway:400,300,700' rel='stylesheet' type='text/css'>
 
 </head>
-<body background="assets/img/another.jpg" style="height:100%;width:100%;">
-<div class="form-wrapperr" style="height:360px;">
+<body background="assets/img/another.jpg" style="height:100%;width:100%;background-size:cover;border:none;margin:0;padding:0;">
+<div class="form-wrapperr" style="height:auto;">
   
   <!-- Uses login.php to process the login. Checks entered details are matching of anything within the email table and password table -->
   <form method="POST">
     <h3>Sign In Here</h3>
 	
     <div class="form-item">
-		<input style="color:#fff;padding-left:5px;font-size:1.55em;border:1px solid #fff;border-radius:5px;" type="text" id="username" name="inputUsername" required="required" placeholder="Username" autofocus/>
+		<input style="color:#fff;padding-left:5px;font-size:1.55em;border:1px solid #fff;border-radius:5px;" type="text" id="username" name="inputUsername" required="required" placeholder="Username" autocomplete="off" autofocus />
     
     <div class="form-item">
-		<input style="color:#fff;padding-left:5px;font-size:1.55em;border:1px solid #fff;border-radius:5px;" type="password" id="password" name="inputPassword" required="required" placeholder="Password" />
+		<input style="color:#fff;padding-left:5px;font-size:1.55em;border:1px solid #fff;border-radius:5px;" type="password" id="password" name="inputPassword" required="required" placeholder="Password" autocomplete="off" />
     </div>
     
     <div class="button-panel">
@@ -74,7 +74,7 @@
   </form>
 
   <div class="reminder">
-    <p>Not a member? <a href="register.html">Sign up now</a></p>
+    <p>Not a member? <a href="register.php">Sign up now</a></p>
     <p><a href="resetPassword_Send.html">Forgot your password?</a></p>
     <p id="loginError" style="display:none;">These details are incorrect!</p>
   </div>
