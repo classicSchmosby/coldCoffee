@@ -58,29 +58,24 @@ h3 {
   width:100%;
   padding-left:0px;
 }
-
 input[type='password']{
 	background: transparent url("img/pass.jpg") no-repeat;
 	background-position: 10px 50%;
 }
-
 input[type='text']{
 	background: transparent url("img/user.jpg") no-repeat;
 	background-position: 10px 50%;
 }
-
 .form-item input:focus {
   outline: none;
   border:1.4px solid #cfecf0;
 }
-
 .button-panel {
   margin-bottom: 20px;
   padding-top: 10px;
   width: 100%;
   text-align: left;
 }
-
 .button-panel .button {
 	background: #00b6df;
 	border: none;
@@ -97,25 +92,20 @@ input[type='text']{
 	width: 100%;
 	margin-top: 10px;
 }
-
 .button:hover {
   background: #6eb7cb;
 }
-
 .form-item input, .button-panel .button {
   border-radius:5px;
 }
-
 .reminder {
   text-align: center;
 }
-
 .reminder a {
   color: #fff;
   text-decoration: none;
   transition: color 0.3s;
 }
-
 .reminder a:hover {
   color: #cab6bf;
 }
@@ -144,13 +134,23 @@ input[type='text']{
   color:#428BCA;
 }
 .navIconLeft {
-  float: left;
+  float:left;
   padding-left:5em;
 }
-
 .navIconRest {
   padding-left:15%;
   font-size:1.5em;
   vertical-align: middle;
   text-align: center;
+}
+#googleCaptcha {
+  margin-top:10px;
+}
+#inputEmail, #inputUsername,
+#inputPasswordOne, #inputPasswordTwo {
+  color:#fff;
+  padding-left:5px;
+  font-size:1.55em;
+  border:1px solid #fff;
+  border-radius:5px;
 }
