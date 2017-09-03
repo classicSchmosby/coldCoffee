@@ -5,6 +5,8 @@
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // pass username into variable
     $myusername = mysqli_real_escape_string($conn, $_POST['inputUsername']);
+    // pass username and string into variable
+    $myUserImg = ('default.png');
     // pass email into variable
     $myemail = mysqli_real_escape_string($conn, $_POST['inputEmail']);
     // pass password into variable
@@ -14,7 +16,7 @@
     $date = date('Y-m-d H:i:s', time());
 
     $userLogin = mysqli_query($conn,
-      "INSERT INTO users (dateCreated, username, password, email) VALUES('$date','$myusername', '$mypassword', '$myemail')");
+      "INSERT INTO users (dateCreated, username, userImg, password, email) VALUES('$date', '$myusername', '$myUserImg', '$mypassword', '$myemail')");
     $row = mysqli_fetch_array($userLogin, MYSQLI_ASSOC);
 
     header("location: login.php");
