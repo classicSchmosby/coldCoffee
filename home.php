@@ -27,14 +27,17 @@
 	<!-- Menu -->
 	<nav class="menu" id="theMenu">
 		<div class="menu-wrap">
-			<h1 class="logo"><a href="">Menu - <?php echo($login_session); ?></a></h1>
-			<i class="icon-remove menu-close"></i>
-			<a href="index.html" class="smoothScroll">Home</a>
-			<a href="login.html">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;Login</a>
-			<a href="logout.php">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;Logout</a>
-			<a href="register.html">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;Register</a>
-			<a href="myAccount.html">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;My Account</a>
-			<a href="resetPassword_Send">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;Reset Password</a>
+			<h1 class="logo"><a href="#">Menu</a></h1>
+			<h2><a href="index.html" class="smoothScroll">Home</a></h2>
+
+			<h2 onclick="userItem_list()"><a id="userListItem" href="#"><?php echo($login_session); ?></a></h2>
+			<!-- <i class="icon-remove menu-close"></i> -->
+			<a id="userItem_login" href="login.html">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;Login<br /></a>
+			<a id="userItem_logout" href="logout.php">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;Logout<br /></a>
+			<a id="userItem_register" href="register.html">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;Register<br /></a>
+			<a id="userItem_account" href="myAccount.html">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;My Account<br /></a>
+			<a id="userItem_passw" href="resetPassword_Send">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;Reset Password<br /></a>
+
 			<a href="map.html" class="smoothScroll">Map</a>
 			<a href="#services" class="smoothScroll">Services</a>
 			<a href="#portfolio" class="smoothScroll">Portfolio</a>
@@ -49,7 +52,7 @@
 			<a href="https://mail.google.com/mail/u/0/?tab=wm#inbox" style="color:#428BCA;"><i class="icon-envelope"></i></a>
 		</div>
 		<!-- Menu button -->
-		<div id="menuToggle"><i class="icon-reorder"></i></div>
+		<div id="menuToggle"><i id="menuToggleBtn" class="glyphicon glyphicon-align-right"></i></div>
 	</nav>
 	
 	<!-- ========== HEADER SECTION ========== -->
@@ -199,4 +202,11 @@
     </script>
 </body>
 <div class="se-pre-con"></div>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#userDrop').click(function() {
+			$('#userItem_login, #userItem_logout, #userItem_register, #userItem_account, #userItem_passw').toggle();
+		});
+	});
+</script>
 </html>
