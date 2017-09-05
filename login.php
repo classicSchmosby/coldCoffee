@@ -12,17 +12,17 @@
     $date = date('Y-m-d H:i:s', time());
 
     $pswd = $_POST['inputPassword'][0];
-
     $auditQuery = mysqli_query($conn,
       "INSERT INTO auditUserLogin (FK_Username, password, loginDate) VALUES('$_POST[inputUsername]', '$pswd', '$date')");
-    $auditRow = $row = mysqli_fetch_array($auditQuery, MYSQLI_ASSOC);
+    $auditRow = mysqli_fetch_array($auditQuery, MYSQLI_ASSOC);
 
     $sql = "SELECT userId FROM users WHERE username = '$myusername' and password = '$mypassword'";
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
     $count = mysqli_num_rows($result);
-    if ($count == 1) {
+
+    if($count == 1) {
       $_SESSION['login_user'] = $myusername;
       header("location: home.php");
     } else {
