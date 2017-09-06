@@ -95,3 +95,48 @@ label > input:checked + img {
 	position:absolute;
 	margin:0;
 }
+#profilePiccyWrapper {
+	width:110px;
+	height:110px;
+	display:inline-block;
+	position:absolute;
+	right:10px;
+	top:12px;
+	border-radius:10px;
+}
+#reviewPiccyWrapper {
+	width:60px;
+	height:60px;
+	display:inline-block;
+	position:relative;
+	border-radius:10px;
+	text-align:center;
+}
+.profilePiccy {
+	width:100%;
+	height:100%;
+	position:relative;
+	border-radius:10px;
+}
+#profilePiccyWrapper:hover,
+.profilePiccy:hover {
+	cursor:pointer;
+}
+#profilePiccyAdd {
+	float:left;
+	margin-left:10px;
+}
+#profilePiccyEdit {
+	float:left;
+	margin-left:25px;
+}
+#profilePiccyRemove {
+	float:right;
+	margin-right:10px;
+}
+#profilePiccyAdd:hover,
+#profilePiccyEdit:hover,
+#profilePiccyRemove:hover {
+	background-color:lightgrey;
+	cursor:pointer;
+}

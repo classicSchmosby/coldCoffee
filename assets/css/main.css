@@ -429,12 +429,35 @@ icon-reorder:before{content:"\f0c9";}
 }
 #userListItem:hover {
 	color:#FC462C;
+	cursor:pointer;
+}
+#userItem_account:hover,
+#userItem_passw:hover {
+	color:#0F63EE;
+	cursor:pointer;
+}
+#userItem_login:hover,
+#userItem_register:hover {
+	color:#0FEE31;
+	cursor:pointer;
+}
+#userItem_logout:hover {
+	color:#ff3333;
+	cursor:pointer;
 }
 #userItem_login, #userItem_logout,
 #userItem_register, #userItem_account,
-#userItem_passw {
+#userItem_passw, #dividerOne, #dividerTwo {
 	display:none;
 	position:relative;
+}
+#userListProfile, #userListItem, #userDrop {
+	-webkit-touch-callout:none;
+	-webkit-user-select:none;
+	-khtml-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+	user-select:none;
 }
 .btn-theme {
 	color: #fff;
