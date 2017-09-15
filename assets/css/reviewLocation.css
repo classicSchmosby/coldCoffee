@@ -124,15 +124,27 @@ label > input:checked + img {
 }
 #profilePiccyAdd {
 	float:left;
-	margin-left:10px;
+	margin-left:0px;
+	outline:none;
+	border:none;
+	background-color:#fff;
+	color:#000;
 }
 #profilePiccyEdit {
 	float:left;
-	margin-left:25px;
+	margin-left:10px;
+	outline:none;
+	border:none;
+	background-color:#fff;
+	color:#000;
 }
 #profilePiccyRemove {
 	float:right;
-	margin-right:10px;
+	margin-right:0px;
+	outline:none;
+	border:none;
+	background-color:#fff;
+	color:#000;
 }
 #profilePiccyAdd:hover,
 #profilePiccyEdit:hover,
