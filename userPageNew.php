@@ -81,6 +81,51 @@
 
 		header("Location: reviewLocation.php");
 	}
+	
+	
+	if(isset($_POST['profilePiccyEdit'])) {
+		$profilePiccyQuery = mysqli_query($conn,
+			"SELECT userImg FROM users WHERE (username = '$login_session')");
+		$profilePiccyQueryDisp = mysqli_fetch_assoc($profilePiccyQuery);
+		if ($profilePiccyQueryDisp == 'default.png') {
+			echo("<script>alert('You cannot edit this image!');</script>");
+		} else {
+			$deleteProfilePic = mysqli_query($conn,
+				"UPDATE users SET userImg='default.png' WHERE (username = '$login_session')");
+			header("Location: userPageNew.php");
+		}
+	}
+
+	if(isset($_POST['profilePiccyRemove'])) {
+		$profilePiccyQuery = mysqli_query($conn,
+			"SELECT userImg FROM users WHERE (username = '$login_session')");
+		$profilePiccyQueryDisp = mysqli_fetch_assoc($profilePiccyQuery);
+		if ($profilePiccyQueryDisp == 'default.png') {
+			echo("<script>alert('You cannot remove this image!');</script>");
+		} else {
+			$deleteProfilePic = mysqli_query($conn,
+				"UPDATE users SET userImg='default.png' WHERE (username = '$login_session')");
+			header("Location: userPageNew.php");
+		}
+	}
+
+	// Removing username, adding a default value. - Need to add a 'change username function'.
+	$usernameQuery = mysqli_query($conn,
+		"SELECT username FROM users WHERE (username = '$login_session')");
+	$usernameQueryDisp = mysqli_fetch_assoc($usernameQuery);
+	if (($usernameQueryDisp == null) || ($usernameQueryDisp == ''))
+	{
+		$userQuery = mysqli_query($conn, 
+  			"SELECT * FROM users WHERE (username = '$login_session') LIMIT 1");
+  		$userQueryDisp = mysqli_fetch_assoc($userQuery);
+  		$currentUserId = ($userQueryDisp["userId"]);
+
+  		$defaultUsernameValue = ('user' . $currentUserId);
+		$defaultUsernameQuery = mysqli_query($conn,
+			"UPDATE users SET username='$defaultUsernameValue' WHERE (username = '$login_session')");
+		header("Location: userPageNew.php");
+	}
+
 ?> 
 <!DOCTYPE html>
 <html lang="en">
@@ -99,10 +144,7 @@
   </head>
   <body>
   <?php 
-  	$userQuery = mysqli_query($conn, 
-  		"SELECT * FROM users WHERE (username = '$login_session') LIMIT 1");
-  	$userQueryDisp = mysqli_fetch_assoc($userQuery);
-  	$currentUserId = ($userQueryDisp["userId"]);
+  	
   ?>
     <div class="container">
 		<div class="row">
@@ -123,9 +165,17 @@
 						?>
 						<img class="profilePiccy" onclick="profilePiccy()" src="<?php echo($profilePictureString) ?>">
 
-						<i id="profilePiccyAdd" class="glyphicon glyphicon-plus"></i>
-						<i id="profilePiccyEdit" class="glyphicon glyphicon-pencil"></i>
-						<i id="profilePiccyRemove" class="glyphicon glyphicon-trash"></i>
+						<form id="profilePiccyOptions" method="post" action="">
+							<button id="profilePiccyAdd" name="profilePiccyAdd" type="post">
+								<i class="glyphicon glyphicon-plus"></i>
+							</button>
+							<button id="profilePiccyEdit" name="profilePiccyEdit" method="post">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</button>
+							<button id="profilePiccyRemove" name="profilePiccyRemove" method="post">
+								<i class="glyphicon glyphicon-trash"></i>
+							</button>
+						</form>
 					</div>
 					<br />
 					<h5>
